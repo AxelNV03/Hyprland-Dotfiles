@@ -1,0 +1,8 @@
+# ~/.gitignore
+# Ignorar archivos temporales y cachés
+.DS_Store
+*.log
+*.tmp
+
+# Ignorar archivos de estado de la VM si se llegan a colar
+.nfs*`

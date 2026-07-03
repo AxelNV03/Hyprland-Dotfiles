@@ -1,0 +1,8 @@
+# Paquetes Base
+hyprland
+kitty
+
+# Fuentes
+ttf-font-awesome
+ttf-jetbrains-mono-nerd
+noto-fonts
