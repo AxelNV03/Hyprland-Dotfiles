@@ -1,8 +1,12 @@
 # Paquetes Base
 hyprland
 kitty
+nvim
+yazi
 
 # Fuentes
 ttf-font-awesome
 ttf-jetbrains-mono-nerd
 noto-fonts
+
+# Extra
