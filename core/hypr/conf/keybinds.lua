@@ -1,5 +1,6 @@
 -- =====================================================================
 -- KEYBINDS
+-- Example binds, see https://wiki.hypr.land/Configuring/Basics/Binds/ for more
 -- =====================================================================
 
 local mainMod = "SUPER"

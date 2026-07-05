@@ -1,8 +1,15 @@
 # Paquetes Base
-hyprland
 kitty
 nvim
 yazi
+
+# hyprland 
+hyprland
+hyprpaper
+hyprpolkitagent  
+hyprsunset
+hyprlock
+hypridle
 
 # Fuentes
 ttf-font-awesome
@@ -10,3 +17,4 @@ ttf-jetbrains-mono-nerd
 noto-fonts
 
 # Extra
+cursor-clip
