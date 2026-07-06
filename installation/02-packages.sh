@@ -16,6 +16,7 @@ PKGS_SYSTEM=(
     "bluez"                       # Pila de protocolos de Bluetooth nativos de Linux (Carga los drivers de radio)
     "bluez-utils"                 # Herramientas de control por línea de comandos para Bluetooth (Incluye bluetoothctl)
     "dnsmasq"                     # Servidor ligero de DNS/DHCP para manejo rápido de redes locales
+    "tree"                        # Visor en arbol de directorios y files
 )
 
 # --- [ 2. MOTORES DE COMPRESIÓN Y EXTRACCIÓN ] ---

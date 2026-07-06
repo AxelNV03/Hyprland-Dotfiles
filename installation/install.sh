@@ -8,11 +8,11 @@ BASE_DIR=$(cd "$(dirname "$0")" && pwd)
 DOTFILES_DIR=$(cd "$BASE_DIR/../" && pwd)  # un nivel arriba de /installation/
 
 # 2. Dar permisos de ejecución
-chmod +x "$BASE_DIR/rollback.sh"
+chmod +x "$BASE_DIR/_rollback.sh"
 chmod +x "$BASE_DIR"/*.sh
 
 # 3. Importar el motor de Rollback
-source "$BASE_DIR/rollback.sh"
+source "$BASE_DIR/_rollback.sh"
  
 # 4. Funciones de utilidad
 print_line() {
@@ -40,9 +40,8 @@ declare -a SCRIPTS=(
     "$BASE_DIR/01-mirrors.sh"
     "$BASE_DIR/02-packages.sh"
     "$BASE_DIR/03-paru.sh"
-    "$BASE_DIR/03-services.sh"
-    "$BASE_DIR/04-symlinks.sh"
-    "$BASE_DIR/05-tlp_battery.sh"
+    "$BASE_DIR/04-start_services.sh"
+    "$BASE_DIR/05-battery.sh"
 )
 
 for script in "${SCRIPTS[@]}"; do

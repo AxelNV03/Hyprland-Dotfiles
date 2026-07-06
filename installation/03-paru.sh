@@ -6,7 +6,8 @@
 
 # --- 1. Catálogo Limpio de Paquetes AUR ---
 PARU_PKGS=(
-    "losslesscut-bin"             # Editor de video sin pérdida (Ultra rápido, ideal para clips multimedia)
+    "losslesscut-bin"               # Editor de video sin pérdida (Ultra rápido, ideal para clips multimedia)
+    "brave-origin-nightly-bin"      # Browser
 )
 
 echo -e "${BLUE}🛠️ Verificando instalador de AUR (Paru)...${NC}"
