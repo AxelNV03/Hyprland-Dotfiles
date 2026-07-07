@@ -27,7 +27,8 @@ require("conf/layouts")
 ---- CURVAS, FEEL ----
 ----------------------
 require("conf/curves")
-require("conf/profile_config")
+-- require("conf/animations")
+-- require("conf/appearance")
 
 -------------------------
 ---- RULES ----

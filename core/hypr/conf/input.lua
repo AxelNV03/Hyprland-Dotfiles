@@ -4,10 +4,10 @@
 -- =====================================================================
 hl.config({
     input = {
-        kb_layout  = "us",
+        kb_layout  = "us, latam",
         kb_variant = "",
         kb_model   = "",
-        kb_options = "",
+        kb_options = "grp:win_space_toggle",
         kb_rules   = "",
 
         follow_mouse = 1,
@@ -16,6 +16,7 @@ hl.config({
 
         touchpad = {
             natural_scroll = false,
+            tap_to_click = true  
         },
     },
 })

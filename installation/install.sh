@@ -42,20 +42,21 @@ print_section() {
 
 # 5. Banner inicial
 print_line
-echo -e "${GREEN}   🚀 INICIANDO INSTALACIÓN DE HYPRLAND DOTFILES   ${NC}"
-echo -e "${YELLOW}   Directorio: $DOTFILES_DIR${NC}"
+echo -e "${GREEN}🚀 INICIANDO INSTALACIÓN DE HYPRLAND DOTFILES   ${NC}"
+echo -e "${YELLOW}Directorio: $DOTFILES_DIR${NC}"
 print_line
 
 # 6. Ejecutar módulos en orden explícito (mejor que glob + grep)
 print_section "Ejecutando módulos de instalación"
 
 declare -a SCRIPTS=(
-    "$BASE_DIR/00-reflector.sh"
-    "$BASE_DIR/01-mirrors.sh"
-    "$BASE_DIR/02-packages.sh"
-    "$BASE_DIR/03-paru.sh"
-    "$BASE_DIR/04-start_services.sh"
+    # "$BASE_DIR/00-reflector.sh"
+    # "$BASE_DIR/01-mirrors.sh"
+    # "$BASE_DIR/02-packages.sh"
+    # "$BASE_DIR/03-paru.sh"
+    # "$BASE_DIR/04-start_services.sh"
     # "$BASE_DIR/05-battery.sh"  #Solo se ejecuta si es laptop
+    "$BASE_DIR/06-core_config.sh"
 )
 
 for script in "${SCRIPTS[@]}"; do

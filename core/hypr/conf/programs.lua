@@ -1,9 +1,9 @@
 -- =====================================================================
 -- PROGRAMAS
 -- =====================================================================
-local terminal = "kitty"
-local novelas = "kitty"
-local fileManager = "yazi"
-local ide = "kitty"
-local menu = "rofi -show drun"
-local browser = "brave-origin-nightly"
+terminal = "kitty"
+novelas = "kitty"
+fileManager = "yazi"
+ide = "kitty"
+menu = "rofi -show drun"
+browser = "brave-origin-nightly"
