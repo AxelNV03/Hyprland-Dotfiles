@@ -19,6 +19,7 @@ PKGS_SYSTEM=(
     "tree"                        # Visor en arbol de directorios y files
     "rust"                        # Increible
     "unarchiver"              # Extractor universal inteligente que maneja nombres de archivos con codificaciones raras
+    "ncdu"                      # Checar el Disk
 )
 
 # --- [ 2. MOTORES DE COMPRESIÓN Y EXTRACCIÓN ] ---
