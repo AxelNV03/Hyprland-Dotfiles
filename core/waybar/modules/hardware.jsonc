@@ -1,0 +1,70 @@
+{
+    // =======================================================================
+    // CONTROL DE AUDIO (PIPEWIRE VIA CAPA DE COMPATIBILIDAD PULSE)
+    // =======================================================================
+    "pulseaudio": {
+        "format": "{volume}%", 
+        "format-bluetooth": "{volume}%",
+        "format-muted": "MUTED",
+        "format-source": "{volume}%",
+        "format-source-muted": "MUTED",
+        "scroll-step": 5, 
+        // Clic izquierdo: Silencia | Clic derecho: Abre el panel gráfico nativo de PipeWire (pwvucontrol)
+        "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+        "on-click-right": "pwvucontrol", // 🌟 CAMBIADO: Invocación directa y nativa de GTK4
+        "tooltip-format": "Salida: {desc} | Vol: {volume}%"
+    },
+
+    "pulseaudio#microphone": {
+        "format": "{format_source}",
+        "format-source": "{volume}%",
+        "format-source-muted": "MUTED",
+        "scroll-step": 5,
+        // Clic izquierdo: Silencia Micrófono | Clic derecho: Mezclador GTK4 Nativo
+        "on-click": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
+        "on-click-right": "pwvucontrol",
+        "tooltip-format": "Entrada: {source_desc} | Vol: {source_volume}%"
+    },
+    "bluetooth": {
+        "format": "ON",
+        "format-disabled": "OFF",
+        "format-connected": "{num_connections}", 
+        "tooltip-format": "Controlador: {status}",
+        "tooltip-format-connected": "Dispositivos conectados:\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "󰂄 {device_alias}\t{device_battery_percentage}%",
+        
+        // 🌟 CAMBIADO: Mandamos una señal limpia a tu servicio de AGS 
+        // para que despliegue el panel de control o toggle de Bluetooth.
+        // Reemplaza 'bluetooth-toggle' por el nombre del método o ventana que definas en tu JS/TS.
+        "on-click-right": "ags -t 'bluetooth-toggle'"
+    },
+    // =======================================================================
+    // CONTROL DE RETROILUMINACIÓN (BRILLO DE PANTALLA)
+    // =======================================================================
+    "backlight": {
+        "interval": 2,
+        "align": 0,
+        "rotate": 0,
+        // 🌟 PORTABLE: Omitimos "device" para que Waybar autodetecte la ruta en /sys/class/backlight/
+        "format": "{percent}%",
+        "scroll-step": 5, // Controla el brillo deslizando el mouse encima
+        "tooltip": true,
+        "tooltip-format": "Brillo de pantalla: {percent}%"
+    },
+
+    // =======================================================================
+    // CONECTIVIDAD Y REDES (MONITOREO DINÁMICO DE INTERFAZ ACTIVA)
+    // =======================================================================
+    "network": {
+        "interval": 5,
+        // 🌟 PORTABLE: Al no forzar una interfaz física, toma la red que te dé internet por defecto
+        "format-wifi": "{essid}", // Muestra el nombre limpio de la red (ej: "Infinitum_5G")
+        "format-ethernet": "ETH", 
+        "format-disconnected": "DISCONNECTED",
+        "format-alt": "󰛴 {bandwidthUpBytes} | 󰛶 {bandwidthDownBytes}", // Clic para alternar a velocidades de red
+        "tooltip-format-wifi": "Señal: {signalStrength}% | IP: {ipaddr}\nGateway: {gwaddr}",
+        "tooltip-format-ethernet": "Interfaz: {ifname} | IP: {ipaddr}",
+        // Clic derecho: Abre el gestor de redes en modo texto (nmtui) para conectarte con el teclado
+        "on-click-right": "kitty --class waybar-monitor -e nmtui"
+    }
+}

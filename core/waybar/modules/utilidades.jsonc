@@ -1,6 +1,23 @@
 {
-    "Sexo": {
-
-    }
+    "custom/updates": {
+        "interval": 1800, // Revisa cada 30 minutos
+        // 🌟 PORTABLE: Detecta si usas pacman (Cachy/Arch) o dnf (Fedora) y cuenta los paquetes
+        "exec": "checkupdates 2>/dev/null | wc -l || dnf check-update -q 2>/dev/null | grep -c '^[a-zA-Z0-9]' || echo '0'",
+        "format": "UPD: {}", // Datos puros: Ej. "UPD: 14"
+        "exec-if": "exit 0",
+        "on-click": "kitty --class waybar-monitor -e sync-system", // Script tuyo para actualizar
+        "tooltip": true,
+        "tooltip-format": "Paquetes listos para actualizar"
+    },
+    "custom/separator#line": {
+    	"format": "|",
+    	"interval": "once",
+    	"tooltip": false
+    },
+    "custom/separator#dot-line": {
+    	"format": "",
+    	"interval": "once",
+    	"tooltip": false
+    },
 
 }
