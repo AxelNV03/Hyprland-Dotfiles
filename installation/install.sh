@@ -1,34 +1,34 @@
 #!/bin/bash
 # =====================================================================
-# INSTALACIÓN AUTOMATIZADA - ARCH / DERIVADAS
+#     INSTALACIÓN AUTOMATIZADA — ARCH/DERIVADAS + HYPRLAND
 # =====================================================================
 
-# Sudo solo una vez
+# --- Sudo una sola vez ---
 echo -e "${YELLOW}🔑 Solicitando privilegios administrativos...${NC}"
-# El flag -v (validate) fuerza a pedir la contraseña y actualiza el timestamp de sudo
 if ! sudo -v; then
     echo -e "${RED}❌ Error: No se pudieron obtener privilegios. Abortando.${NC}"
     exit 1
 fi
 
-# Mantener la sesión activa en segundo plano (opcional)
-# Esto actualiza el timestamp cada minuto mientras el script corre
+# Mantener sesión sudo viva en segundo plano
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 SUDO_PID=$!
 trap 'kill $SUDO_PID' EXIT
 
-# 1. Ruta absoluta
+
+# --- Rutas base ---
 BASE_DIR=$(cd "$(dirname "$0")" && pwd)
-DOTFILES_DIR=$(cd "$BASE_DIR/../" && pwd)  # un nivel arriba de /installation/
+DOTFILES_DIR=$(cd "$BASE_DIR/../" && pwd)
 
-# 2. Dar permisos de ejecución
+# --- Permisos de ejecución ---
 chmod +x "$BASE_DIR/_rollback.sh"
-chmod +x "$BASE_DIR"/*.sh
+chmod +x "$BASE_DIR"/0[0-6]*.sh 2>/dev/null
+chmod +x "$BASE_DIR"/0x-*.sh 2>/dev/null
 
-# 3. Importar el motor de Rollback
+# --- Motor de logging ---
 source "$BASE_DIR/_rollback.sh"
- 
-# 4. Funciones de utilidad
+
+# --- Utilidades ---
 print_line() {
     echo -e "${YELLOW}==========================================${NC}"
 }
@@ -40,13 +40,20 @@ print_section() {
     print_line
 }
 
-# 5. Banner inicial
+# --- Detección de hardware ---
+IS_LAPTOP=false
+if [ -d /sys/class/power_supply ] && ls /sys/class/power_supply/BAT* >/dev/null 2>&1; then
+    IS_LAPTOP=true
+fi
+
+# --- Banner ---
 print_line
-echo -e "${GREEN}🚀 INICIANDO INSTALACIÓN DE HYPRLAND DOTFILES   ${NC}"
+echo -e "${GREEN}🚀 INICIANDO INSTALACIÓN DE HYPRLAND DOTFILES${NC}"
 echo -e "${YELLOW}Directorio: $DOTFILES_DIR${NC}"
+echo -e "${YELLOW}Hardware: $($IS_LAPTOP && echo 'Laptop' || echo 'Desktop')${NC}"
 print_line
 
-# 6. Ejecutar módulos en orden explícito (mejor que glob + grep)
+# --- Módulos de instalación ---
 print_section "Ejecutando módulos de instalación"
 
 declare -a SCRIPTS=(
@@ -58,6 +65,11 @@ declare -a SCRIPTS=(
     # "$BASE_DIR/05-battery.sh"  #Solo se ejecuta si es laptop
     "$BASE_DIR/06-core_config.sh"
 )
+
+# Solo ejecutar battery si es laptop
+if $IS_LAPTOP; then
+    SCRIPTS+=("$BASE_DIR/05-battery.sh")
+fi
 
 for script in "${SCRIPTS[@]}"; do
     if [ -f "$script" ]; then
@@ -74,10 +86,10 @@ for script in "${SCRIPTS[@]}"; do
     fi
 done
 
-# 7. Resumen final (leyendo el contador de errores correctamente)
+# --- Resumen final ---
 print_section "Resumen de instalación"
 ERROR_COUNT=$(cat "$ERROR_COUNT_FILE" 2>/dev/null || echo "0")
- 
+
 if [ "$ERROR_COUNT" -eq 0 ]; then
     echo -e "${GREEN}    ✨ ¡Proceso finalizado con éxito!${NC}"
     echo -e "${GREEN}    Todos los módulos se completaron correctamente.${NC}"
@@ -86,8 +98,8 @@ else
     echo -e "${YELLOW}    Revisa el log para más detalles:${NC}"
     echo -e "${YELLOW}    $LOG_FILE${NC}"
 fi
- 
-# 8. Limpiar archivos temporales
+
+# --- Limpieza ---
 rm -f "$ERROR_COUNT_FILE"
 print_line
 echo -e "${GREEN}   📋 Log guardado en: $LOG_FILE${NC}"
