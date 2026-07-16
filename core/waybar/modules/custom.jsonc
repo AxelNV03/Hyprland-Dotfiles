@@ -1,3 +1,8 @@
 {
-    
+    "custom/start#windows": {
+        "format": " Inicio",
+        "tooltip-format": "Menú de aplicaciones",
+        "on-click": "rofi -show drun",
+        "on-click-right": "rofi -show window"
+    }
 }

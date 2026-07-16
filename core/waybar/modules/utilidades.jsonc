@@ -1,37 +1,48 @@
 {
+    // =======================================================================
+    // ACTUALIZACIONES DEL SISTEMA
+    // =======================================================================
     "custom/updates": {
-        "interval": 1800, // Revisa cada 30 minutos
-        // 🌟 PORTABLE: Detecta si usas pacman (Cachy/Arch) o dnf (Fedora) y cuenta los paquetes
+        "interval": 1800,
         "exec": "checkupdates 2>/dev/null | wc -l || dnf check-update -q 2>/dev/null | grep -c '^[a-zA-Z0-9]' || echo '0'",
-        "format": "UPD: {}", // Datos puros: Ej. "UPD: 14"
+        "format": "󰏗 {}",
         "exec-if": "exit 0",
-        "on-click": "kitty --class waybar-monitor -e sync-system", // Script tuyo para actualizar
+        "on-click": "kitty --class waybar-monitor -e sync-system",
         "tooltip": true,
         "tooltip-format": "Paquetes listos para actualizar"
     },
+
+    // =======================================================================
+    // SEPARADORES
+    // =======================================================================
     "custom/separator#line": {
-    	"format": "|",
-    	"interval": "once",
-    	"tooltip": false
+        "format": "|",
+        "interval": "once",
+        "tooltip": false
     },
+
     "custom/separator#dot-line": {
-    	"format": "",
-    	"interval": "once",
-    	"tooltip": false
+        "format": "",
+        "interval": "once",
+        "tooltip": false
     },
+
+    // =======================================================================
+    // CENTRO DE NOTIFICACIONES (SWAYNC)
+    // =======================================================================
     "custom/swaync": {
         "tooltip": true,
-        "tooltip-format": "Left Click: Launch Notification Center\nRight Click: Do not Disturb",
-        "format": " {} {icon} ",
+        "tooltip-format": "Click: Notificaciones | Click derecho: No molestar",
+        "format": "{} {icon}",
         "format-icons": {
-            "notification": "<sup></sup>",
-            "none": "",
-            "dnd-notification": "<sup></sup>",
-            "dnd-none": "",
-            "inhibited-notification": "<sup></sup>",
-            "inhibited-none": "",
-            "dnd-inhibited-notification": "<sup></sup>",
-            "dnd-inhibited-none": ""
+            "notification": "󰂚",
+            "none": "󰂜",
+            "dnd-notification": "󰂛",
+            "dnd-none": "󰂛",
+            "inhibited-notification": "󰂚",
+            "inhibited-none": "󰂜",
+            "dnd-inhibited-notification": "󰂛",
+            "dnd-inhibited-none": "󰂛"
         },
         "return-type": "json",
         "exec-if": "which swaync-client",
@@ -39,6 +50,5 @@
         "on-click": "sleep 0.1 && swaync-client -t -sw",
         "on-click-right": "swaync-client -d -sw",
         "escape": true
-    }   
-
+    }
 }

@@ -1,15 +1,19 @@
 {
-    "clock":{
-        "format": "{:%H:%M:%S}", // Muestra puramente la hora en tiempo real
-        "tooltip": false // Desactivamos el tooltip nativo porque ahora usaremos el módulo calendar,
+    // =======================================================================
+    // RELOJ Y CALENDARIO
+    // =======================================================================
+    "clock": {
+        "format": "󰥔 {:%H:%M:%S}",
+        "tooltip": false
     },
+
     "custom/calendar": {
         "interval": 60,
         "locale": "es_MX.UTF-8",
-        "format": "{:%B %d, %Y}", // Datos puros de fecha en la barra
+        "format": "󰃭 {:%B %d, %Y}",
         "tooltip-format": "<tt><small>{calendar}</small></tt>",
         "calendar": {
-            "mode": "month", // 🌟 CAMBIADO: Ahora solo renderiza el mes actual
+            "mode": "month",
             "on-scroll": 1,
             "format": {
                 "months":   "<span class='cal-month'><b>{}</b></span>",
@@ -20,40 +24,57 @@
             }
         }
     },
+
+    // =======================================================================
+    // CPU
+    // =======================================================================
     "cpu": {
         "interval": 1,
-        "format": "{usage}%", // Porcentaje promedio global de carga (funciona de 2 a 128 núcleos)
+        "format": "󰻠 {usage}%",
         "min-length": 5,
-        "format-alt": "{avg_frequency}GHz", // Frecuencia promedio global del procesador
-        "on-click-right": "kitty --class waybar-monitor -e btop" // Ejecución CLI estándar portable
-    },
-    "memory": {
-        "interval": 5, // Revisa el consumo cada 5 segundos para no saturar
-        "format": "{used:0.1f}G", // 🌟 DATOS PUROS: Muestra ej: "3.4G" fijo sin saltos de texto
-        "format-alt": "{percentage}%", // Al darle un clic, alterna a porcentaje global (ej: "21%")
-        "tooltip": true,
-        "tooltip-format": "Memoria: {used:0.1f}GB de {total:0.1f}GB usados\nSwap: {swapUsed:0.1f}GB / {swapTotal:0.1f}GB",
-        // 🌟 Reutiliza la clase de Lua para abrir btop centrado y flotante
+        "format-alt": "󰻠 {avg_frequency}GHz",
         "on-click-right": "kitty --class waybar-monitor -e btop"
     },
+
+    // =======================================================================
+    // MEMORIA RAM
+    // =======================================================================
+    "memory": {
+        "interval": 5,
+        "format": "󰍛 {used:0.1f}G",
+        "format-alt": "󰍛 {percentage}%",
+        "tooltip": true,
+        "tooltip-format": "Memoria: {used:0.1f}GB de {total:0.1f}GB usados\nSwap: {swapUsed:0.1f}GB / {swapTotal:0.1f}GB",
+        "on-click-right": "kitty --class waybar-monitor -e btop"
+    },
+
+    // =======================================================================
+    // TEMPERATURA
+    // =======================================================================
     "temperature": {
         "interval": 10,
-        "critical-threshold": 80, // Umbral crítico genérico estándar (80°C)
-        "format": "{temperatureC}°C", // 🌟 DATOS PUROS: Muestra ej: "45°C"
-        "format-critical": "{temperatureC}°C", // Texto plano incluso en estado crítico
+        "critical-threshold": 80,
+        "format": "󰔏 {temperatureC}°C",
+        "format-critical": "󰸁 {temperatureC}°C",
         "tooltip": true,
         "tooltip-format": "Temperatura del Procesador: {temperatureC}°C",
-        // Al dar clic derecho, abre sensores para ver temperaturas detalladas por núcleo
         "on-click-right": "kitty --class waybar-monitor -e watch sensors"
     },
-    // Disco Principal (Donde vive tu Fedora/Linux)
+
+    // =======================================================================
+    // DISCO PRINCIPAL
+    // =======================================================================
     "disk": {
         "interval": 30,
-        "path": "/", 
-        "format": "{percentage_used}%",
+        "path": "/",
+        "format": "󰋊 {percentage_used}%",
         "tooltip-format": "SSD Sistema (/): {used} de {total}",
         "on-click-right": "kitty --class waybar-monitor -e ncdu /"
     },
+
+    // =======================================================================
+    // BATERÍA
+    // =======================================================================
     "battery": {
         "full-at": 100,
         "design-capacity": false,
@@ -62,19 +83,24 @@
             "warning": 30,
             "critical": 15
         },
-        "format": "{capacity}%", // 🌟 DATOS PUROS: Ej. "85%"
-        "format-charging": "{capacity}%",
-        "format-plugged": "{capacity}%",
-        "format-full": "100%",
-        "format-alt": "{time}", // Muestra el tiempo restante (ej. "2h 15min") al dar clic izquierdo
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
+        "format-plugged": "󰚥 {capacity}%",
+        "format-full": "󰁹 100%",
+        "format-alt": "󱊤 {time}",
         "format-time": "{H}h {M}min",
+        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
         "tooltip": true,
         "tooltip-format": "Restante: {timeTo}\nConsumo: {power}W"
     },
+
+    // =======================================================================
+    // UPTIME
+    // =======================================================================
     "custom/uptime": {
         "interval": 60,
-        "exec": "uptime -p | sed 's/up //; s/ hours,/h/; s/ hour,/h/; s/ minutes/m/; s/ minute/m/'", // 🌟 NUEVO: Formatea ej: "3h 45m"
-        "format": "UP: {}",
+        "exec": "uptime -p | sed 's/up //; s/ hours,/h/; s/ hour,/h/; s/ minutes/m/; s/ minute/m/'",
+        "format": "󰅐 {}",
         "tooltip": true,
         "tooltip-format": "Tiempo total desde el último arranque"
     }

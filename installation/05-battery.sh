@@ -1,58 +1,60 @@
 #!/usr/bin/env bash
 # =====================================================================
-# INTERFAZ DE ENERGÍA UNIVERSAL (Agnóstica de Hardware)
+#     INTERFAZ DE ENERGÍA UNIVERSAL — Agnóstica de Hardware
 # =====================================================================
 
-echo -e "${BLUE}🚀 Configurando gestión de energía global ...${NC}"
+echo -e "${BLUE}🚀 Configurando gestión de energía global...${NC}"
 
-# 1. Componentes Core de CPU (Válido para cualquier marca)
+# --- 1. Power Profiles Daemon ---
 execute_step "Instalando power-profiles-daemon" \
              "sudo pacman -S --needed --noconfirm power-profiles-daemon" \
-             "Install PPD"
+             "Install-PPD"
 
 execute_step "Activando servicio de perfiles de energía" \
              "sudo systemctl enable --now power-profiles-daemon" \
-             "Enable PPD Service"
+             "Enable-PPD"
+
+# Pequeña pausa para que el daemon esté listo antes de usarlo
+sleep 0.5
 
 execute_step "Estableciendo perfil de energía balanceado" \
              "powerprofilesctl set balanced" \
-             "PPD-Initial-Profile"
+             "PPD-Balanced"
 
-# 2. Orquestador Dinámico de Umbrales de Batería (Soporte Multi-Batería y Multi-Vendor)
+# --- 2. Umbral de carga de batería (multi-vendor, multi-batería) ---
+BATTERY_THRESHOLD="${BATTERY_THRESHOLD:-80}"
 BAT_FOUND=false
 
 for bat_dir in /sys/class/power_supply/BAT*; do
-    # Verificar si el directorio realmente existe (evitar fallos si no hay baterías)
     if [ -d "$bat_dir" ]; then
-        BAT_NAME=$(basename "$bat_dir") # 🛠️ CORREGIDO: "bat_dir" en lugar de "bt_dir"
+        BAT_NAME=$(basename "$bat_dir")
         BAT_CMD=""
 
-        # Detectar el archivo compatible con el firmware del equipo
+        # Detectar archivo de control según firmware
         if [ -f "$bat_dir/charge_control_limit_max" ]; then
-            # ASUS nativo (Como tu TUF Gaming)
-            BAT_CMD="echo 80 | sudo tee $bat_dir/charge_control_limit_max"
+            # ASUS nativo (TUF Gaming, ROG)
+            BAT_CMD="echo $BATTERY_THRESHOLD | sudo tee $bat_dir/charge_control_limit_max"
         elif [ -f "$bat_dir/charge_control_end_threshold" ]; then
-            # Lenovo / ThinkPad moderno nativo del Kernel API
-            BAT_CMD="echo 80 | sudo tee $bat_dir/charge_control_end_threshold"
+            # Lenovo / ThinkPad moderno (Kernel API nativa)
+            BAT_CMD="echo $BATTERY_THRESHOLD | sudo tee $bat_dir/charge_control_end_threshold"
         elif [ -f "$bat_dir/charge_stop_threshold_max" ]; then
-            # Lenovo legado / Capas de compatibilidad antiguas
-            BAT_CMD="echo 80 | sudo tee $bat_dir/charge_stop_threshold_max"
+            # Lenovo legacy / capas de compatibilidad
+            BAT_CMD="echo $BATTERY_THRESHOLD | sudo tee $bat_dir/charge_stop_threshold_max"
         elif [ -f "$bat_dir/fw_charge_threshold" ]; then
-            # Huawei / Otras marcas
-            BAT_CMD="echo 80 | sudo tee $bat_dir/fw_charge_threshold"
+            # Huawei / Otros fabricantes
+            BAT_CMD="echo $BATTERY_THRESHOLD | sudo tee $bat_dir/fw_charge_threshold"
         fi
 
-        # Si se encontró un método de control válido, se ejecuta el paso
         if [ -n "$BAT_CMD" ]; then
             BAT_FOUND=true
-            execute_step "Configurando umbral al 80% para: $BAT_NAME" \
+            execute_step "Umbral de carga al ${BATTERY_THRESHOLD}% para: $BAT_NAME" \
                          "$BAT_CMD" \
-                         "Battery-$BAT_NAME-Threshold"
+                         "Battery-$BAT_NAME"
         fi
     fi
 done
 
-# Si después de escanear no se encontró soporte nativo de hardware
 if [ "$BAT_FOUND" = false ]; then
-    echo -e "${YELLOW}⚠️ No se detectaron baterías compatibles con umbral nativo en el kernel. Saltando...${NC}"
+    echo -e "${YELLOW}⚠️  No se detectaron baterías con control de umbral nativo. Saltando...${NC}"
+    echo -e "${YELLOW}   Esto es normal en desktops o laptops sin soporte en kernel.${NC}"
 fi
